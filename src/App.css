@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: 'SF Pro Display', sans-serif;
 }
 
 .viewport {
@@ -41,6 +42,7 @@ body {
 
 #contentElement,
 .titleElement {
+  font-family: 'SF Pro Display', sans-serif;
   background-color: transparent;
   border-style: none;
 

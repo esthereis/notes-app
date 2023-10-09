@@ -1,11 +1,29 @@
 import '../App.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function Note(props) {
   const [note, setNote] = useState({ title: '', content: '' });
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    function clickOutside(event) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        props.onEnter(note);
+      }
+    }
+
+    window.addEventListener('click', clickOutside);
+    return () => {
+      window.removeEventListener('click', clickOutside);
+    };
+  }, [note, props]);
+
   return (
-    <>
+    <div ref={containerRef} className='contentContainer'>
       <input
         className='titleElement'
         type='text'
@@ -14,11 +32,6 @@ function Note(props) {
           setNote({ title: e.target.value, content: note.content })
         }
         value={note.title}
-        onKeyDown={e => {
-          if (e.key === 'Enter') {
-            props.onEnter(note);
-          }
-        }}
       />
       <textarea
         name='contentField'
@@ -27,13 +40,8 @@ function Note(props) {
         rows='10'
         onChange={e => setNote({ content: e.target.value, title: note.title })}
         value={note.content}
-        onKeyDown={e => {
-          if (e.key === 'Enter') {
-            props.onEnter(note);
-          }
-        }}
       ></textarea>
-    </>
+    </div>
   );
 }
 

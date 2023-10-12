@@ -10,9 +10,12 @@ function Note(props) {
     function clickOutside(event) {
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target)
+        !containerRef.current.contains(event.target) &&
+        note.title !== '' &&
+        note.content !== ''
       ) {
         props.onEnter(note);
+        setNote({ title: '', content: '' });
       }
     }
 

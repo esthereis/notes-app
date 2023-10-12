@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 
 function Thumbnail(props) {
   return (
-    <li className='thumbnailElement'>
+    <li
+      className={`thumbnailElement ${props.clicked ? 'clicked' : ''}`}
+      onClick={() => {
+        props.onClick();
+      }}
+    >
       <span>{props.title}</span>
 
       <p>
@@ -17,7 +22,9 @@ function Thumbnail(props) {
 
 Thumbnail.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired
+  content: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  clicked: PropTypes.bool
 };
 
 export default Thumbnail;

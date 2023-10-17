@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 function Note(props) {
   const [note, setNote] = useState({
     title: '',
-    content: ''
+    content: '',
+    id: crypto.randomUUID()
   });
 
   const containerRef = useRef(null);
@@ -19,7 +20,8 @@ function Note(props) {
         note.content !== ''
       ) {
         props.onEnter(note);
-        setNote({ title: '', content: '' });
+        console.log('run');
+        setNote({ title: '', content: '', id: crypto.randomUUID() });
       }
     }
 
@@ -30,11 +32,14 @@ function Note(props) {
   }, [note, props]);
 
   useEffect(() => {
-    setNote({
-      title: props.inputTitle,
-      content: props.textAreaContent
+    setNote(previous => {
+      return {
+        title: props.inputTitle,
+        content: props.textAreaContent,
+        id: props.noteId ?? previous.id
+      };
     });
-  }, [props.inputTitle, props.textAreaContent]);
+  }, [props.inputTitle, props.textAreaContent, props.noteId]);
 
   return (
     <div ref={containerRef} className='contentContainer'>
@@ -43,7 +48,7 @@ function Note(props) {
         type='text'
         placeholder='Add a title'
         onChange={e =>
-          setNote({ title: e.target.value, content: note.content })
+          setNote({ title: e.target.value, content: note.content, id: note.id })
         }
         value={note.title}
       />
@@ -53,7 +58,9 @@ function Note(props) {
         id='contentElement'
         cols='30'
         rows='10'
-        onChange={e => setNote({ content: e.target.value, title: note.title })}
+        onChange={e =>
+          setNote({ content: e.target.value, title: note.title, id: note.id })
+        }
         value={note.content}
       ></textarea>
     </div>
@@ -63,7 +70,8 @@ function Note(props) {
 Note.propTypes = {
   onEnter: PropTypes.func.isRequired,
   inputTitle: PropTypes.string,
-  textAreaContent: PropTypes.string
+  textAreaContent: PropTypes.string,
+  noteId: PropTypes.string
 };
 
 export default Note;

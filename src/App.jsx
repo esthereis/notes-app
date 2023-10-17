@@ -4,8 +4,11 @@ import './App.css';
 import Note from './components/Note';
 import Thumbnail from './components/Thumbnail';
 import deleteIcon from './icons/bin.png';
+import addIcon from './icons/add.svg';
 
 //TODO: At the moment you click outside the container, create a default thumbnail
+//REMOVE multiple states, bring only 1 state
+//Use the onChangeMethod to control the content of the cards
 
 function App() {
   const initialValue = JSON.parse(window.localStorage.getItem('notes')) ?? [];
@@ -29,7 +32,26 @@ function App() {
   return (
     <div className='viewport'>
       <ul className='notesContainer'>
-        <img src={deleteIcon} className='icons' onClick={() => deleteItem()} />
+        <div className='iconsContainer'>
+          <img
+            src={deleteIcon}
+            className='icons'
+            onClick={() => deleteItem()}
+          />
+          <img
+            src={addIcon}
+            className='icons'
+            onClick={() =>
+              setNotes([
+                {
+                  title: 'New Note',
+                  content: 'Add Content',
+                  id: crypto.randomUUID()
+                }
+              ])
+            }
+          />
+        </div>
         {notes.map((item, i) => {
           return (
             <Thumbnail
@@ -38,7 +60,6 @@ function App() {
               content={item?.content}
               onClick={() => {
                 setSelectedNote(item);
-                console.log(item);
               }}
               clicked={selectedNote === item}
             />
@@ -56,6 +77,26 @@ function App() {
         inputTitle={selectedNote?.title}
         textAreaContent={selectedNote?.content}
         noteId={selectedNote?.id}
+        // onClickInput={() => {
+        //   return setNotes([
+        //     {
+        //       title: 'New Note',
+        //       content: 'Add Content',
+        //       id: crypto.randomUUID()
+        //     }
+        //   ]);
+        // }}
+
+        // onClickTextArea={() => {
+        //   console.log(notes);
+        //   return setNotes([
+        //     {
+        //       title: 'New Note',
+        //       content: 'Add Content',
+        //       id: crypto.randomUUID()
+        //     }
+        //   ]);
+        // }}
       ></Note>
     </div>
   );

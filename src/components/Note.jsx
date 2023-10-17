@@ -11,25 +11,27 @@ function Note(props) {
 
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    function clickOutside(event) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target) &&
-        note.title !== '' &&
-        note.content !== ''
-      ) {
-        props.onEnter(note);
-        console.log('run');
-        setNote({ title: '', content: '', id: crypto.randomUUID() });
-      }
-    }
+  // useEffect(() => {
+  //   function clickOutside(event) {
+  //     if (
+  //       containerRef.current &&
+  //       !containerRef.current.contains(event.target) &&
+  //       note.title !== '' &&
+  //       note.content !== ''
+  //     ) {
+  //       props.onEnter(note);
+  //       console.log('run');
+  //       setNote({ title: '', content: '', id: crypto.randomUUID() });
+  //     }
+  //   }
 
-    window.addEventListener('click', clickOutside);
-    return () => {
-      window.removeEventListener('click', clickOutside);
-    };
-  }, [note, props]);
+  //   //AT the moment you write on input you send the content to the thumbnail
+
+  //   window.addEventListener('click', clickOutside);
+  //   return () => {
+  //     window.removeEventListener('click', clickOutside);
+  //   };
+  // }, [note, props]);
 
   useEffect(() => {
     setNote(previous => {
@@ -47,10 +49,15 @@ function Note(props) {
         className='titleElement'
         type='text'
         placeholder='Add a title'
-        onChange={e =>
-          setNote({ title: e.target.value, content: note.content, id: note.id })
-        }
+        onChange={e => {
+          setNote({
+            title: e.target.value,
+            content: note.content,
+            id: note.id
+          });
+        }}
         value={note.title}
+        onClick={() => props.onEnter(note)}
       />
 
       <textarea
@@ -62,6 +69,7 @@ function Note(props) {
           setNote({ content: e.target.value, title: note.title, id: note.id })
         }
         value={note.content}
+        onClick={() => props.onEnter(note)}
       ></textarea>
     </div>
   );
@@ -71,7 +79,10 @@ Note.propTypes = {
   onEnter: PropTypes.func.isRequired,
   inputTitle: PropTypes.string,
   textAreaContent: PropTypes.string,
-  noteId: PropTypes.string
+  noteId: PropTypes.string,
+  onClickInput: PropTypes.func,
+  onClickTextArea: PropTypes.func,
+  onChangeInput: PropTypes.func
 };
 
 export default Note;

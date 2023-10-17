@@ -9,7 +9,7 @@ function Thumbnail(props) {
         props.onClick();
       }}
     >
-      <span>{props.title}</span>
+      <span>{props.title || 'New Note'}</span>
 
       <p>
         <time dateTime='08:30'></time>

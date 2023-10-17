@@ -3,7 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 function Note(props) {
-  const [note, setNote] = useState({ title: '', content: '' });
+  const [note, setNote] = useState({
+    title: '',
+    content: ''
+  });
+
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -25,6 +29,13 @@ function Note(props) {
     };
   }, [note, props]);
 
+  useEffect(() => {
+    setNote({
+      title: props.inputTitle,
+      content: props.textAreaContent
+    });
+  }, [props.inputTitle, props.textAreaContent]);
+
   return (
     <div ref={containerRef} className='contentContainer'>
       <input
@@ -36,6 +47,7 @@ function Note(props) {
         }
         value={note.title}
       />
+
       <textarea
         name='contentField'
         id='contentElement'
@@ -49,7 +61,9 @@ function Note(props) {
 }
 
 Note.propTypes = {
-  onEnter: PropTypes.func.isRequired
+  onEnter: PropTypes.func.isRequired,
+  inputTitle: PropTypes.string,
+  textAreaContent: PropTypes.string
 };
 
 export default Note;

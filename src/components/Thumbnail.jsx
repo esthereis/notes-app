@@ -22,7 +22,7 @@ function Thumbnail(props) {
 
 Thumbnail.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   clicked: PropTypes.bool
 };
